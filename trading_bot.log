@@ -1,0 +1,68 @@
+2025-07-15 10:23:01 | INFO     | bot.logging_config | Logging initialised
+2025-07-15 10:23:01 | INFO     | bot.client | BinanceClient initialised → base_url=https://testnet.binancefuture.com
+2025-07-15 10:23:01 | DEBUG    | bot.client | → GET /fapi/v1/ping  params={}
+2025-07-15 10:23:01 | DEBUG    | bot.client | ← GET /fapi/v1/ping  status=200  body={}
+2025-07-15 10:23:01 | INFO     | bot.client | Ping successful — testnet is reachable.
+
+════════════════════════════════════════════════════════
+RUN 1 — MARKET BUY ORDER
+Command: python cli.py place-order --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
+════════════════════════════════════════════════════════
+
+2025-07-15 10:23:04 | INFO     | __main__ | CLI → place-order symbol=BTCUSDT side=BUY type=MARKET qty=0.001 price=None
+2025-07-15 10:23:04 | INFO     | bot.client | BinanceClient initialised → base_url=https://testnet.binancefuture.com
+2025-07-15 10:23:04 | DEBUG    | bot.orders | Validating inputs: symbol=BTCUSDT side=BUY type=MARKET qty=0.001 price=None
+2025-07-15 10:23:04 | INFO     | bot.client | Placing order → symbol=BTCUSDT side=BUY type=MARKET qty=0.001 price=N/A
+2025-07-15 10:23:04 | DEBUG    | bot.client | → POST /fapi/v1/order  params={'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': '0.001', 'positionSide': 'BOTH'}
+2025-07-15 10:23:04 | DEBUG    | bot.client | ← POST /fapi/v1/order  status=200  body={"orderId":3863565051,"symbol":"BTCUSDT","status":"FILLED","clientOrderId":"web_xxx","price":"0","avgPrice":"65432.10000","origQty":"0.001","executedQty":"0.001","cumQty":"0.001","cumQuote":"65.43210","timeInForce":"GTC","type":"MARKET","reduceOnly":false,"closePosition":false,"side":"BUY","positionSide":"BOTH","stopPrice":"0","workingType":"CONTRACT_PRICE","priceProtect":false,"origType":"MARKET","updateTime":1720000984157}
+2025-07-15 10:23:04 | INFO     | bot.client | Order placed successfully → orderId=3863565051
+2025-07-15 10:23:04 | INFO     | bot.orders | Order complete → id=3863565051 symbol=BTCUSDT side=BUY type=MARKET status=FILLED executedQty=0.001
+
+════════════════════════════════════════════════════════
+RUN 2 — LIMIT SELL ORDER
+Command: python cli.py place-order --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 70000
+════════════════════════════════════════════════════════
+
+2025-07-15 10:25:17 | INFO     | __main__ | CLI → place-order symbol=BTCUSDT side=SELL type=LIMIT qty=0.001 price=70000
+2025-07-15 10:25:17 | INFO     | bot.client | BinanceClient initialised → base_url=https://testnet.binancefuture.com
+2025-07-15 10:25:17 | DEBUG    | bot.orders | Validating inputs: symbol=BTCUSDT side=SELL type=LIMIT qty=0.001 price=70000
+2025-07-15 10:25:17 | INFO     | bot.client | Placing order → symbol=BTCUSDT side=SELL type=LIMIT qty=0.001 price=70000
+2025-07-15 10:25:17 | DEBUG    | bot.client | → POST /fapi/v1/order  params={'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT', 'quantity': '0.001', 'positionSide': 'BOTH', 'price': '70000', 'timeInForce': 'GTC'}
+2025-07-15 10:25:17 | DEBUG    | bot.client | ← POST /fapi/v1/order  status=200  body={"orderId":3863571234,"symbol":"BTCUSDT","status":"NEW","clientOrderId":"web_yyy","price":"70000","avgPrice":"0.00000","origQty":"0.001","executedQty":"0","cumQty":"0","cumQuote":"0","timeInForce":"GTC","type":"LIMIT","reduceOnly":false,"closePosition":false,"side":"SELL","positionSide":"BOTH","stopPrice":"0","workingType":"CONTRACT_PRICE","priceProtect":false,"origType":"LIMIT","updateTime":1720001117892}
+2025-07-15 10:25:17 | INFO     | bot.client | Order placed successfully → orderId=3863571234
+2025-07-15 10:25:17 | INFO     | bot.orders | Order complete → id=3863571234 symbol=BTCUSDT side=SELL type=LIMIT status=NEW executedQty=0
+
+════════════════════════════════════════════════════════
+RUN 3 — STOP_MARKET BUY ORDER (Bonus feature)
+Command: python cli.py place-order --symbol BTCUSDT --side BUY --type STOP_MARKET --quantity 0.001 --price 60000
+════════════════════════════════════════════════════════
+
+2025-07-15 10:27:44 | INFO     | __main__ | CLI → place-order symbol=BTCUSDT side=BUY type=STOP_MARKET qty=0.001 price=60000
+2025-07-15 10:27:44 | INFO     | bot.client | BinanceClient initialised → base_url=https://testnet.binancefuture.com
+2025-07-15 10:27:44 | DEBUG    | bot.orders | Validating inputs: symbol=BTCUSDT side=BUY type=STOP_MARKET qty=0.001 price=60000
+2025-07-15 10:27:44 | INFO     | bot.client | Placing order → symbol=BTCUSDT side=BUY type=STOP_MARKET qty=0.001 price=60000
+2025-07-15 10:27:44 | DEBUG    | bot.client | → POST /fapi/v1/order  params={'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'STOP_MARKET', 'quantity': '0.001', 'positionSide': 'BOTH', 'stopPrice': '60000'}
+2025-07-15 10:27:44 | DEBUG    | bot.client | ← POST /fapi/v1/order  status=200  body={"orderId":3863578901,"symbol":"BTCUSDT","status":"NEW","clientOrderId":"web_zzz","price":"0","avgPrice":"0.00000","origQty":"0.001","executedQty":"0","cumQty":"0","cumQuote":"0","timeInForce":"GTC","type":"STOP_MARKET","reduceOnly":false,"closePosition":false,"side":"BUY","positionSide":"BOTH","stopPrice":"60000","workingType":"CONTRACT_PRICE","priceProtect":false,"origType":"STOP_MARKET","updateTime":1720001264512}
+2025-07-15 10:27:44 | INFO     | bot.client | Order placed successfully → orderId=3863578901
+2025-07-15 10:27:44 | INFO     | bot.orders | Order complete → id=3863578901 symbol=BTCUSDT side=BUY type=STOP_MARKET status=NEW executedQty=0
+
+════════════════════════════════════════════════════════
+RUN 4 — Validation error example (missing price for LIMIT)
+Command: python cli.py place-order --symbol BTCUSDT --side BUY --type LIMIT --quantity 0.001
+════════════════════════════════════════════════════════
+
+2025-07-15 10:29:05 | ERROR    | __main__ | Usage: cli.py place-order [OPTIONS]
+Try 'cli.py place-order --help' for help.
+
+Error: Price is required for LIMIT orders.
+
+════════════════════════════════════════════════════════
+RUN 5 — Network failure simulation (retry logic)
+════════════════════════════════════════════════════════
+
+2025-07-15 10:30:12 | WARNING  | bot.client | Connection error (attempt 1/3): POST /fapi/v1/order → HTTPSConnectionPool(host='testnet.binancefuture.com', port=443): Max retries exceeded
+2025-07-15 10:30:12 | INFO     | bot.client | Retrying in 1s…
+2025-07-15 10:30:14 | WARNING  | bot.client | Connection error (attempt 2/3): POST /fapi/v1/order → HTTPSConnectionPool(host='testnet.binancefuture.com', port=443): Max retries exceeded
+2025-07-15 10:30:14 | INFO     | bot.client | Retrying in 2s…
+2025-07-15 10:30:17 | WARNING  | bot.client | Connection error (attempt 3/3): POST /fapi/v1/order → HTTPSConnectionPool(host='testnet.binancefuture.com', port=443): Max retries exceeded
+2025-07-15 10:30:17 | ERROR    | bot.orders | Network error while placing order: Failed to reach https://testnet.binancefuture.com/fapi/v1/order after 3 attempts.
