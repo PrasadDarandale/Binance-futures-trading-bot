@@ -31,7 +31,7 @@ import sys
 from pathlib import Path  # ADD THIS
 from typing import Optional
 
-# ADD THESE TWO LINES:
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import click
@@ -47,16 +47,9 @@ from bot.validators import (
     validate_price,
 )
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Bootstrap logging before any other bot import side-effects
-# ──────────────────────────────────────────────────────────────────────────────
 setup_logging()
 logger = get_logger(__name__)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Helper to build the shared client
-# ──────────────────────────────────────────────────────────────────────────────
 
 def _get_client() -> BinanceClient:
     """
@@ -75,7 +68,7 @@ def _get_client() -> BinanceClient:
 
     if not api_key or not api_secret:
         click.echo(
-            "\n❌  Missing credentials.\n"
+            "\n  Missing credentials.\n"
             "    Set BINANCE_API_KEY and BINANCE_API_SECRET environment variables.\n"
             "    Example:\n"
             "      export BINANCE_API_KEY=your_key\n"
@@ -86,10 +79,6 @@ def _get_client() -> BinanceClient:
 
     return BinanceClient(api_key=api_key, api_secret=api_secret, base_url=base_url)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Validation callbacks for Click options
-# ──────────────────────────────────────────────────────────────────────────────
 
 def _validate_symbol_cb(ctx, param, value):
     try:
@@ -118,25 +107,15 @@ def _validate_quantity_cb(ctx, param, value):
     except ValueError as exc:
         raise click.BadParameter(str(exc))
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# CLI group
-# ──────────────────────────────────────────────────────────────────────────────
-
 @click.group()
 @click.version_option("1.0.0", prog_name="Trading Bot")
 def cli():
     """
-    🤖  Binance Futures Testnet Trading Bot
+      Binance Futures Testnet Trading Bot
 
     Manages orders on the USDT-M perpetual futures testnet.
     Set BINANCE_API_KEY and BINANCE_API_SECRET before use.
     """
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# place-order command
-# ──────────────────────────────────────────────────────────────────────────────
 
 @cli.command("place-order")
 @click.option(
@@ -216,28 +195,19 @@ def cmd_place_order(symbol, side, order_type, quantity, price, tif, reduce_only)
         sys.exit(1)
     except Exception as exc:
         logger.exception("Unexpected error: %s", exc)
-        click.echo(f"\n❌  Unexpected error: {exc}", err=True)
+        click.echo(f"\n Unexpected error: {exc}", err=True)
         sys.exit(1)
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# ping command
-# ──────────────────────────────────────────────────────────────────────────────
 
 @cli.command("ping")
 def cmd_ping():
     """Check connectivity to the Binance Futures Testnet."""
     client = _get_client()
     if client.ping():
-        click.echo("✅  Testnet is reachable.")
+        click.echo("  Testnet is reachable.")
     else:
-        click.echo("❌  Testnet is NOT reachable.", err=True)
+        click.echo("  Testnet is NOT reachable.", err=True)
         sys.exit(1)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# account command
-# ──────────────────────────────────────────────────────────────────────────────
 
 @cli.command("account")
 @click.option(
@@ -252,10 +222,10 @@ def cmd_account(show_all):
     try:
         data = client.get_account()
     except BinanceAPIError as exc:
-        click.echo(f"\n❌  API Error {exc.code}: {exc.msg}", err=True)
+        click.echo(f"\n  API Error {exc.code}: {exc.msg}", err=True)
         sys.exit(1)
     except ConnectionError as exc:
-        click.echo(f"\n❌  Network error: {exc}", err=True)
+        click.echo(f"\n  Network error: {exc}", err=True)
         sys.exit(1)
 
     assets = data.get("assets", [])
@@ -273,11 +243,6 @@ def cmd_account(show_all):
         )
     print("═" * 60 + "\n")
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# open-orders command
-# ──────────────────────────────────────────────────────────────────────────────
-
 @cli.command("open-orders")
 @click.option(
     "--symbol", "-s",
@@ -291,10 +256,10 @@ def cmd_open_orders(symbol):
     try:
         orders = client.get_open_orders(symbol=symbol)
     except BinanceAPIError as exc:
-        click.echo(f"\n❌  API Error {exc.code}: {exc.msg}", err=True)
+        click.echo(f"\n  API Error {exc.code}: {exc.msg}", err=True)
         sys.exit(1)
     except ConnectionError as exc:
-        click.echo(f"\n❌  Network error: {exc}", err=True)
+        click.echo(f"\n  Network error: {exc}", err=True)
         sys.exit(1)
 
     if not orders:
@@ -320,11 +285,6 @@ def cmd_open_orders(symbol):
         )
     print(f"{'═'*70}\n")
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# cancel-order command
-# ──────────────────────────────────────────────────────────────────────────────
-
 @cli.command("cancel-order")
 @click.option(
     "--symbol", "-s",
@@ -344,21 +304,16 @@ def cmd_cancel_order(symbol, order_id):
     try:
         result = client.cancel_order(symbol=symbol, order_id=order_id)
     except BinanceAPIError as exc:
-        click.echo(f"\n❌  API Error {exc.code}: {exc.msg}", err=True)
+        click.echo(f"\n  API Error {exc.code}: {exc.msg}", err=True)
         sys.exit(1)
     except ConnectionError as exc:
-        click.echo(f"\n❌  Network error: {exc}", err=True)
+        click.echo(f"\n  Network error: {exc}", err=True)
         sys.exit(1)
 
     click.echo(
-        f"\n✅  Order cancelled → orderId={result.get('orderId')} "
+        f"\n  Order cancelled → orderId={result.get('orderId')} "
         f"status={result.get('status')}\n"
     )
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Entry point
-# ──────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     cli()
