@@ -13,7 +13,7 @@ from .logging_config import get_logger
 logger = get_logger(__name__)
 
 BASE_URL = "https://testnet.binancefuture.com"
-RECV_WINDOW = 5000  # milliseconds
+RECV_WINDOW = 5000  
 
 
 class BinanceAPIError(Exception):
